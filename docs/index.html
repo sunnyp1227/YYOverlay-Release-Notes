@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Release Notes</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5/github-markdown.min.css">
+  <style>
+    body { margin: 0; }
+    .markdown-body { box-sizing: border-box; max-width: 980px; margin: 0 auto; padding: 16px; }
+    @media (max-width: 767px){ .markdown-body{ padding:12px; } }
+  </style>
+</head>
+<body>
+  <article id="app" class="markdown-body">Loading…</article>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+  <script>
+    // Hardcode your raw MD here (or pass ?src=<raw-url>)
+    const src = new URLSearchParams(location.search).get('src')
+      || 'https://raw.githubusercontent.com/sunnyp1227/YYOverlay-Release-Notes/main/README.md';
+
+    fetch(src, { cache: 'no-cache' })
+      .then(r => r.ok ? r.text() : Promise.reject('HTTP ' + r.status))
+      .then(md => {
+        const html = marked.parse(md, { gfm: true, breaks: true });
+        document.getElementById('app').innerHTML = DOMPurify.sanitize(html);
+      })
+      .catch(err => { document.getElementById('app').textContent = 'Failed: ' + err; });
+  </script>
+</body>
+</html>
